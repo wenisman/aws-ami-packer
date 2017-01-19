@@ -1,0 +1,1 @@
+All windows ami packer code should appear in a subfolder of this folder. 
