@@ -1,7 +1,7 @@
 {
   "variables": {
     "build_version": "1.0.2",
-    "base_ami":"*Microsoft Windows Server 2012 R2 Base*",
+    "base_ami":"Windows_Server-2012-R2_RTM-English-64Bit-Base*",
     "instance_type":"m3.medium",
     "vpc_id":"vpc-ee5de58b",
     "subnet_id":"subnet-8eb619f8"
@@ -17,6 +17,7 @@
             "name": "{{user `base_ami`}}",
             "root-device-type": "ebs"
         },
+        "owners": ["801119661308"],
         "most_recent": true
       },
       "instance_type": "{{user `instance_type`}}",
