@@ -1,0 +1,46 @@
+{
+  "variables": {
+    "build_version": "1.0.2",
+    "base_ami":"*Microsoft Windows Server 2012 R2 Base*",
+    "instance_type":"m3.medium",
+    "vpc_id":"vpc-ee5de58b",
+    "subnet_id":"subnet-8eb619f8"
+  },
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "name": "base-ami",
+      "region": "ap-southeast-2",
+      "source_ami_filter": {
+        "filters": {
+            "virtualization-type": "hvm",
+            "name": "{{user `base_ami`}}",
+            "root-device-type": "ebs"
+        },
+        "most_recent": true
+      },
+      "instance_type": "{{user `instance_type`}}",
+      "ami_name": "base-{{user `build_version`}}",
+      "user_data_file":"./scripts/ec2-bootstrap.ps1",
+      "communicator": "winrm",
+      "winrm_username": "Administrator",
+      "winrm_timeout": "20m",
+      "winrm_use_ssl": true,
+      "winrm_insecure": true,
+      "ssh_private_ip": true,
+      "vpc_id": "{{user `vpc_id`}}",
+      "subnet_id": "{{user `subnet_id`}}"
+    }
+  ],
+  "provisioners": [
+    {
+        "type": "powershell",
+        "scripts": [ "./scripts/provision.ps1" ],
+        "valid_exit_codes": [0, 516]
+    },
+    {
+        "type": "powershell",
+        "scripts": [ "./scripts/Ec2Config.ps1" ]
+    }
+  ]
+}
